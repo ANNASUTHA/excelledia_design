@@ -1,24 +1,38 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:draggable_widget/draggable_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../utils/common/validation.dart';
+import '../widgets/buttonWidget.dart';
 import '../widgets/textfield.dart';
 
 class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({Key? key}) : super(key: key);
+  const AddProductScreen({Key? key, }) : super(key: key);
 
   @override
   State<AddProductScreen> createState() => _AddProductState();
 }
 
 class _AddProductState extends State<AddProductScreen> {
+  late final Widget child;
   final AutovalidateMode _autoValidateMode = AutovalidateMode.disabled;
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productDescriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Offset position = const Offset(0.0, 0.0);
-  final AssetImage _imageToShow =  const AssetImage('assets/images/apple.png');
+  final AssetImage _imageToShow =  const AssetImage('assets/images/barbell.png');
+  final dragController = DragController();
+  Offset position = Offset(100, 100);
+  double prevScale = 1;
+  double scale = 1;
+
+  void updateScale(double zoom) => setState(() => scale = prevScale * zoom);
+  void commitScale() => setState(() => prevScale = scale);
+  void updatePosition(Offset newPosition) =>
+      setState(() => position = newPosition);
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -65,8 +79,8 @@ Widget _productDetails(BuildContext context,Size screenSize){
     return Form(
       key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+       /* mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,*/
         children: [
           const SizedBox(
             height: 20,
@@ -92,6 +106,22 @@ Widget _productDetails(BuildContext context,Size screenSize){
             height: 10,
           ),
           _iconDetails(screenSize),
+          const SizedBox(
+            height: 30,
+          ),
+          ButtonWidget(
+            title: "NEXT",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddProductScreen(
+
+                    )),
+              );
+            },
+
+          ),
         ],
       ),
     );
@@ -129,13 +159,9 @@ Widget _iconDetails(Size size){
     child: Row(
       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
+        SizedBox(
           height: 190,
           width: 150,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -144,26 +170,26 @@ Widget _iconDetails(Size size){
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ClipOval(
-                      child: Material(
-                        color: const Color(0xFF1d202b), // Button color
-                        child: InkWell(
-                          splashColor: Colors.amberAccent, // Splash color
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child:  Container(width: 35, height: 35,
-                            padding: const EdgeInsets.all(2.0),
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(image: AssetImage("assets/images/barbell.png",),fit: BoxFit.cover),
-                              //color: Color(0xFF434454),
-                              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                            ),
+            ClipOval(
+            child: Material(
+            color: const Color(0xFF1d202b), // Button color
+            child: InkWell(
+              splashColor: Colors.amberAccent, // Splash color
+              onTap: () {
+                // dragController.jumpTo(AnchoringPosition.topRight);
+              },
+              child:  Container(width: 35, height: 35,
+                padding: const EdgeInsets.all(2.0),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(image: AssetImage("assets/images/barbell.png",),fit: BoxFit.cover),
+                  //color: Color(0xFF434454),
+                  //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
 
-                          ),
-                        ),
-                      ),
-                    ),
+              ),
+            ),
+          ),
+    ),
                     ClipOval(
                       child: Material(
                         color: const Color(0xFF1d202b), // Button color
@@ -208,6 +234,7 @@ Widget _iconDetails(Size size){
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ClipOval(
                       child: Material(
@@ -217,10 +244,10 @@ Widget _iconDetails(Size size){
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child:  Container(width: 30, height: 30,
+                          child:  Container(width: 35, height: 35,
                             padding: const EdgeInsets.all(2.0),
                             decoration: const BoxDecoration(
-                              image: DecorationImage(image: AssetImage("assets/images/barbell.png",),fit: BoxFit.cover),
+                              image: DecorationImage(image: AssetImage("assets/images/meditation.png",),fit: BoxFit.cover),
                               //color: Color(0xFF434454),
                               //borderRadius: BorderRadius.all(Radius.circular(20.0)),
                             ),
@@ -237,10 +264,15 @@ Widget _iconDetails(Size size){
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: const SizedBox(width: 20, height: 20,child: Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: Icon(Icons.close,size: 15,),
-                          )),
+                          child:  Container(width: 35, height: 35,
+                            padding: const EdgeInsets.all(2.0),
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assets/images/running.png",),fit: BoxFit.cover),
+                              //color: Color(0xFF434454),
+                              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            ),
+
+                          ),
                         ),
                       ),
                     ),
@@ -252,17 +284,22 @@ Widget _iconDetails(Size size){
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: const SizedBox(width: 20, height: 20,child: Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: Icon(Icons.close,size: 15,),
-                          )),
+                          child:  Container(width: 35, height: 35,
+                            padding: const EdgeInsets.all(2.0),
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assets/images/walking.png",),fit: BoxFit.cover),
+                              //color: Color(0xFF434454),
+                              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            ),
+
+                          ),
                         ),
                       ),
                     ),
-
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ClipOval(
                       child: Material(
@@ -272,10 +309,10 @@ Widget _iconDetails(Size size){
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child:  Container(width: 30, height: 30,
+                          child:  Container(width: 35, height: 35,
                             padding: const EdgeInsets.all(2.0),
                             decoration: const BoxDecoration(
-                              image: DecorationImage(image: AssetImage("assets/images/barbell.png",),fit: BoxFit.cover),
+                              image: DecorationImage(image: AssetImage("assets/images/yoga.png",),fit: BoxFit.cover),
                               //color: Color(0xFF434454),
                               //borderRadius: BorderRadius.all(Radius.circular(20.0)),
                             ),
@@ -292,10 +329,15 @@ Widget _iconDetails(Size size){
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: const SizedBox(width: 20, height: 20,child: Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: Icon(Icons.close,size: 15,),
-                          )),
+                          child:  Container(width: 35, height: 35,
+                            padding: const EdgeInsets.all(2.0),
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assets/images/yoga-pose.png",),fit: BoxFit.cover),
+                              //color: Color(0xFF434454),
+                              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            ),
+
+                          ),
                         ),
                       ),
                     ),
@@ -307,14 +349,18 @@ Widget _iconDetails(Size size){
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: const SizedBox(width: 20, height: 20,child: Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: Icon(Icons.close,size: 15,),
-                          )),
+                          child:  Container(width: 35, height: 35,
+                            padding: const EdgeInsets.all(2.0),
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assets/images/fitness.png",),fit: BoxFit.cover),
+                              //color: Color(0xFF434454),
+                              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            ),
+
+                          ),
                         ),
                       ),
                     ),
-
                   ],
                 ),
 
@@ -322,17 +368,77 @@ Widget _iconDetails(Size size){
             ),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0,bottom: 16.0),
+          child: const VerticalDivider(
+            thickness: 3,
+          ),
+        ),
+        SizedBox(
+          width: 4,
+        ),
         Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
+          height: 190,
+          width: 100,
+          /*decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
+          ),*/
+          child: _imageView(),
         ),
       ],
     ),
   );
+  }
+  Widget _imageView(){
+    return Center(
+      child: ClipOval(
+        child: Material(
+        color: const Color(0xFF1d202b),
+        child: DottedBorder(
+          padding: const EdgeInsets.all(15.0),
+          dashPattern: const [10, 10],
+          strokeWidth: 2,
+          strokeCap: StrokeCap.round,
+          color: const Color(0xFF959595),
+          borderType: BorderType.Circle,
+          child: ClipOval(
+            child: Material(
+            color: const Color(0xFF1d202b),
+            child: DottedBorder(
+              padding: const EdgeInsets.all(15.0),
+              dashPattern: const [10, 10],
+              strokeWidth: 2,
+              strokeCap: StrokeCap.round,
+              color: const Color(0xFF959595),
+              borderType: BorderType.Circle,
+              child: ClipOval(
+                child: Material(
+                  color: const Color(0xFF1d202b), // Button color
+                  child: InkWell(
+                    splashColor: Colors.amberAccent, // Splash color
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child:  Container(width: 35, height: 35,
+                      padding: const EdgeInsets.all(2.0),
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(image: AssetImage("assets/images/running.png",),fit: BoxFit.cover),
+                        //color: Color(0xFF434454),
+                        //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      ),
+
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+    ),
+        ),
+      ),)
+    );
+
   }
 Widget _enterDetails(Size size){
   return Container(
