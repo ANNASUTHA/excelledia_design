@@ -1,14 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:draggable_widget/draggable_widget.dart';
 import 'package:excelledia_design/view/pages/add_price_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../utils/common/validation.dart';
 import '../widgets/buttonWidget.dart';
-import '../widgets/textfield.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({
@@ -28,7 +25,7 @@ class _AddProductState extends State<AddProductScreen> {
   final _formKey = GlobalKey<FormState>();
   String? _targetImageUrl ="assets/images/running.png";
   final dragController = DragController();
-  Offset position = Offset(100, 100);
+  Offset position = const Offset(100, 100);
   double prevScale = 1;
   double scale = 1;
 
@@ -176,7 +173,7 @@ class _AddProductState extends State<AddProductScreen> {
       width: size.width * 6,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
       ),
       child: Row(
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -597,7 +594,7 @@ class _AddProductState extends State<AddProductScreen> {
           const SizedBox(
             width: 4,
           ),
-          Container(
+          SizedBox(
             height: 190,
             width: 100,
             /*decoration: BoxDecoration(
@@ -679,7 +676,7 @@ class _AddProductState extends State<AddProductScreen> {
       minLines: 1,//Normal textInputField will be displayed
       maxLines: 2,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(top: 100.0, right: 100.0, ),
+        contentPadding: const EdgeInsets.only(top: 100.0, right: 100.0, ),
         hintText: 'Enter text...',
         hintStyle: const TextStyle(letterSpacing: 2, color: Colors.grey,),
         border: OutlineInputBorder(
@@ -697,24 +694,7 @@ class _AddProductState extends State<AddProductScreen> {
       ),
         keyboardType: TextInputType.name,
     );
-    return Container(
-        padding: const EdgeInsets.all(8.0),
-        height: size.height / 6,
-        width: size.width * 2,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.all(const Radius.circular(10.0)),
-        ),
-      child: const DefaultTextStyle(
-        style: TextStyle(color: Colors.grey, fontSize: 16.0),
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'Enter text...',
-          ),
-        ),
-      ),
-    );
+    
   }
 
   Widget _productName() {

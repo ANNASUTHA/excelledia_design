@@ -1,12 +1,8 @@
-import 'dart:ui';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:excelledia_design/view/pages/add_product_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 
-import '../utils/constants.dart';
 import '../widgets/buttonWidget.dart';
 
 
@@ -148,24 +144,24 @@ Widget _textView(){
                     color: Colors.amberAccent,
                     width: 1
                 ) : null,
-                 color: selectedIndex == 0 ? Colors.black : Color(0xFF959595),
+                 color: selectedIndex == 0 ? Colors.black : const Color(0xFF959595),
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0)),
               ),
               width: MediaQuery.of(context).size.width * 0.42,
               height: MediaQuery.of(context).size.height * 0.42,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children:  [
                   Icon(Icons.production_quantity_limits_sharp,
-                    color: Colors.amberAccent,
+                    color: selectedIndex == 0 ? Colors.amberAccent : Colors.white,
                     size: 16,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 1,
                   ),
                   Text("PRODUCT",
                     style: TextStyle(
-                        color: Colors.amberAccent
+                        color: selectedIndex == 0 ? Colors.amberAccent : Colors.white,
                     ),
                   )
                 ],
@@ -186,8 +182,8 @@ Widget _textView(){
                     color: Colors.amberAccent,
                     width: 1
                 ) : null,
-                color: selectedIndex == 1 ? Colors.black : Color(0xFF959595)  ,
-                borderRadius: BorderRadius.only(topRight: const Radius.circular(20.0)),
+                color: selectedIndex == 1 ? Colors.black : const Color(0xFF959595)  ,
+                borderRadius: const BorderRadius.only(topRight: Radius.circular(20.0)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
