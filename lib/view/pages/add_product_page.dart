@@ -694,7 +694,7 @@ class _AddProductState extends State<AddProductScreen> {
       ),
         keyboardType: TextInputType.name,
     );
-    
+
   }
 
   Widget _productName() {
