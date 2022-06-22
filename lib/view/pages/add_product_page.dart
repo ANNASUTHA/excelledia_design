@@ -26,8 +26,7 @@ class _AddProductState extends State<AddProductScreen> {
   final TextEditingController _productDescriptionController =
       TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String? _targetImageUrl ="assets/images/barbell.png";
-  final AssetImage _imageToShow = const AssetImage('assets/images/barbell.png');
+  String? _targetImageUrl ="assets/images/running.png";
   final dragController = DragController();
   Offset position = Offset(100, 100);
   double prevScale = 1;
@@ -36,46 +35,50 @@ class _AddProductState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Container(
-        height: screenSize.height,
-        width: screenSize.width,
-        decoration: const BoxDecoration(
-          //image: DecorationImage(image: AssetImage("assets/images/bg.png",),fit: BoxFit.cover),
-          color: Color(0xFF1d202b),
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 32.0),
-          child: Container(
-            padding: const EdgeInsets.only(left: 18.0, right: 18.0),
-            margin: const EdgeInsets.all(16.0),
-            height: screenSize.height * 0.82,
-            width: screenSize.width * 0.87,
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+            height: screenSize.height,
+            width: screenSize.width,
             decoration: const BoxDecoration(
               //image: DecorationImage(image: AssetImage("assets/images/bg.png",),fit: BoxFit.cover),
-              color: Color(0xFF434454),
+              color: Color(0xFF1d202b),
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _closeButton(context, screenSize),
-                const SizedBox(
-                  height: 10,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: Container(
+                padding: const EdgeInsets.only(left: 18.0, right: 18.0),
+                margin: const EdgeInsets.all(16.0),
+                height: screenSize.height,
+                width: screenSize.width * 0.87,
+                decoration: const BoxDecoration(
+                  //image: DecorationImage(image: AssetImage("assets/images/bg.png",),fit: BoxFit.cover),
+                  color: Color(0xFF434454),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                 ),
-                _textView(),
-                const SizedBox(
-                  height: 10,
-                ),
-                _stepper(context, screenSize),
-                const SizedBox(
-                  height: 10,
-                ),
-                _productDetails(context, screenSize),
-              ],
-            ),
-          ),
-        ));
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _closeButton(context, screenSize),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _textView(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _stepper(context, screenSize),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _productDetails(context, screenSize),
+                ],
+                  ),
+              ),
+            )),
+      ),
+    );
   }
   Widget _textView(){
     return Text( "ADD PRODUCT",style:
@@ -93,7 +96,6 @@ class _AddProductState extends State<AddProductScreen> {
         /* mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,*/
         children: [
-
           _productName(),
           const SizedBox(
             height: 10,
@@ -102,11 +104,15 @@ class _AddProductState extends State<AddProductScreen> {
           const SizedBox(
             height: 10,
           ),
-          _detailsName(),
+
+          _enterDetailsText(),
           const SizedBox(
             height: 10,
           ),
           _enterDetails(screenSize),
+          const SizedBox(
+            height: 10,
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -126,32 +132,41 @@ class _AddProductState extends State<AddProductScreen> {
                 MaterialPageRoute(
                     builder: (context) => const AddPriceScreen()),
               );
+
             },
           ),
+
+
         ],
       ),
     );
   }
 
   Widget _enterProductName(Size size) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      height: size.height / 13.5,
-      width: size.width * 2,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-      ),
-      child: const DefaultTextStyle(
-        style: TextStyle(color: Colors.grey, fontSize: 16.0),
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            '2 Weeks athletics plan',
+    return TextFormField(
+      controller: _productNameController,
+      autovalidateMode: _autoValidateMode,
+      cursorColor:
+      Colors.amberAccent,
+      decoration: InputDecoration(
+        hintText: '2 Weeks athletics plan',
+        border: OutlineInputBorder(
+          borderRadius:
+          BorderRadius.circular(10.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color:
+            Colors.grey,
           ),
+          borderRadius:
+          BorderRadius.circular(10.0),
         ),
       ),
+      keyboardType: TextInputType.name,
+      validator: SimpleFunctions.nameValidator,
     );
+
   }
 
   Widget _iconDetails(Size size) {
@@ -440,6 +455,49 @@ class _AddProductState extends State<AddProductScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+
+                      Draggable<String>(
+                        data: "assets/images/fitness.png",
+                        child: Container(
+                          width: 38,
+                          height: 38,
+                          alignment: Alignment.center,
+                          //color: Colors.purple,
+                          child: Image.asset(
+                            'assets/images/fitness.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        // The widget to show under the pointer when a drag is under way
+                        feedback: Opacity(
+                          opacity: 0.4,
+                          child: ClipOval(
+                            child: Material(
+                              color: const Color(0xFF1d202b), // Button color
+                              child: InkWell(
+                                splashColor: Colors.amberAccent, // Splash color
+                                onTap: () {
+                                  // dragController.jumpTo(AnchoringPosition.topRight);
+                                },
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  padding: const EdgeInsets.all(2.0),
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                          "assets/images/fitness.png",
+                                        ),
+                                        fit: BoxFit.cover),
+                                    //color: Color(0xFF434454),
+                                    //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       Draggable<String>(
                         data: "assets/images/yoga.png",
                         child: Container(
@@ -513,48 +571,6 @@ class _AddProductState extends State<AddProductScreen> {
                                     image: DecorationImage(
                                         image: AssetImage(
                                           "assets/images/yoga-pose.png",
-                                        ),
-                                        fit: BoxFit.cover),
-                                    //color: Color(0xFF434454),
-                                    //borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Draggable<String>(
-                        data: "assets/images/fitness.png",
-                        child: Container(
-                          width: 38,
-                          height: 38,
-                          alignment: Alignment.center,
-                          //color: Colors.purple,
-                          child: Image.asset(
-                            'assets/images/fitness.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        // The widget to show under the pointer when a drag is under way
-                        feedback: Opacity(
-                          opacity: 0.4,
-                          child: ClipOval(
-                            child: Material(
-                              color: const Color(0xFF1d202b), // Button color
-                              child: InkWell(
-                                splashColor: Colors.amberAccent, // Splash color
-                                onTap: () {
-                                  // dragController.jumpTo(AnchoringPosition.topRight);
-                                },
-                                child: Container(
-                                  width: 35,
-                                  height: 35,
-                                  padding: const EdgeInsets.all(2.0),
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                          "assets/images/fitness.png",
                                         ),
                                         fit: BoxFit.cover),
                                     //color: Color(0xFF434454),
@@ -654,6 +670,33 @@ class _AddProductState extends State<AddProductScreen> {
   }
 
   Widget _enterDetails(Size size) {
+    return TextFormField(
+      controller: _productDescriptionController,
+      autovalidateMode: _autoValidateMode,
+      validator: SimpleFunctions.nameValidator,
+      cursorColor:
+      Colors.amberAccent,
+      minLines: 1,//Normal textInputField will be displayed
+      maxLines: 2,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.only(top: 100.0, right: 100.0, ),
+        hintText: 'Enter text...',
+        hintStyle: const TextStyle(letterSpacing: 2, color: Colors.grey,),
+        border: OutlineInputBorder(
+          borderRadius:
+          BorderRadius.circular(10.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color:
+            Colors.grey,
+          ),
+          borderRadius:
+          BorderRadius.circular(10.0),
+        ),
+      ),
+        keyboardType: TextInputType.name,
+    );
     return Container(
         padding: const EdgeInsets.all(8.0),
         height: size.height / 6,
@@ -685,7 +728,7 @@ class _AddProductState extends State<AddProductScreen> {
     );
   }
 
-  Widget _detailsName() {
+  Widget _enterDetailsText() {
     return const Align(
       alignment: Alignment.topLeft,
       child: DefaultTextStyle(

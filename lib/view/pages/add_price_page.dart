@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -13,6 +14,7 @@ class AddPriceScreen extends StatefulWidget {
 
 class _AddPriceState extends State<AddPriceScreen> {
   double _value = 45.0;
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -51,44 +53,64 @@ class _AddPriceState extends State<AddPriceScreen> {
               ),
               _priceDetails(context, screenSize),
               const SizedBox(
-                height: 50,
+                height: 200,
               ),
-          ElevatedButton(
-            style:ElevatedButton.styleFrom(
-              fixedSize: const Size(280, 45),
-              primary: Colors.amberAccent.shade700,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-            ),
-            onPressed: (){
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                style:ElevatedButton.styleFrom(
+                  fixedSize: const Size(140, 45),
+                  primary: selectedIndex == 1 ?  Colors.black : const Color(0xFF959595),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: (){
+                    setState(() {
+                      selectedIndex == 0;
+                    });
+                    Navigator.pop(context);
+                },
+                child: const Text(
+                  "PREVIOUS",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
 
-            },
-            child: const Text(
-              "PREVIOUS",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
-          ElevatedButton(
-            style:ElevatedButton.styleFrom(
-              fixedSize: const Size(280, 45),
-              primary: Colors.amberAccent.shade700,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-            ),
-            onPressed: (){
+              ElevatedButton(
+                style:ElevatedButton.styleFrom(
+                  fixedSize: const Size(140, 45),
+                  primary: Colors.amberAccent.shade700,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: (){
+                  Fluttertoast.showToast(
+                      msg: "Added Successfully",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.amberAccent,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
 
-            },
-            child: const Text(
-              "NEXT",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
+
+                },
+                child: const Text(
+                  "NEXT",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
               ),
-            ),
-          ),
+            ],
+          )
+
 
             ],
           ),
@@ -122,12 +144,12 @@ class _AddPriceState extends State<AddPriceScreen> {
                     height: 40,
                     width: 100,
                     decoration: const BoxDecoration(
-                      color: Colors.black,
+                      color: Color(0xFF434454),
                       // border: Border.all(color: Color(0xFF1d202b)),
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     child: Center(
-                      child: Text(  '₺'  "${_value.toStringAsFixed(2)}",style:
+                      child: Text(  '₺  ' "${_value.toStringAsFixed(2)}",style:
                       Theme.of(context)
                           .textTheme
                           .headline6
@@ -163,10 +185,12 @@ class _AddPriceState extends State<AddPriceScreen> {
   Widget _priceName() {
     return const Align(
       alignment: Alignment.topLeft,
-      child: DefaultTextStyle(
-        style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
-        child: Text('ADD PRICE'),
+      child: Center(
+        child: DefaultTextStyle(
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),
+          child: Text('ADD PRICE'),
+        ),
       ),
     );
   }

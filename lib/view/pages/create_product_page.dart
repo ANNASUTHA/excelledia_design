@@ -62,7 +62,7 @@ class _CreateProjectState extends State<CreateProjectScreen> {
                 _imageView(),
                 const SizedBox(height: 40,),
                 _textView(),
-                const SizedBox(height: 140,),
+                const SizedBox(height: 120,),
                 ButtonWidget(
                   title: "ADD NOW",
                   onPressed: () {
@@ -75,6 +75,9 @@ class _CreateProjectState extends State<CreateProjectScreen> {
                     );
                   },
 
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
 
               ],
