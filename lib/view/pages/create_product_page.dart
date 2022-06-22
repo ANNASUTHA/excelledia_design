@@ -87,7 +87,7 @@ class _CreateProjectState extends State<CreateProjectScreen> {
 Widget _textView(){
     return Column(
       children: [
-        Text("ADD YOUR PRODUCT",style:
+        Text( selectedIndex == 0 ?"ADD YOUR PRODUCT" : "ADD YOUR SERVICE",style:
         Theme.of(context)
         .textTheme
         .headline6
