@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:vertical_weight_slider/vertical_weight_slider.dart';
 
+import '../utils/common/validation.dart';
 import '../widgets/buttonWidget.dart';
 
 class AddPriceScreen extends StatefulWidget {
@@ -15,6 +17,16 @@ class AddPriceScreen extends StatefulWidget {
 class _AddPriceState extends State<AddPriceScreen> {
   double _value = 45.0;
   int selectedIndex = 0;
+  late WeightSliderController _controller = WeightSliderController();
+  final AutovalidateMode _autoValidateMode = AutovalidateMode.disabled;
+  final TextEditingController _priceController = TextEditingController();
+  double _weight = 45.0;
+  @override
+  void initState() {
+    super.initState();
+    _controller = WeightSliderController(initialWeight: _weight, minWeight: 0, interval: 0.1);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -89,12 +101,12 @@ class _AddPriceState extends State<AddPriceScreen> {
                 ),
                 onPressed: (){
                   Fluttertoast.showToast(
-                      msg: "Added Successfully",
+                      msg: "Finished",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
                       timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.amberAccent,
-                      textColor: Colors.white,
+                      backgroundColor: Colors.white,
+                      textColor: Colors.amberAccent,
                       fontSize: 16.0
                   );
 
@@ -121,7 +133,7 @@ class _AddPriceState extends State<AddPriceScreen> {
   Widget _priceDetails(BuildContext context, Size screenSize){
     return Container(
       padding: const EdgeInsets.all(8.0),
-      height: screenSize.height / 3,
+      height: screenSize.height / 2.5,
       width: screenSize.width * 2,
       decoration: const BoxDecoration(
         color: Color(0xFF1d202b),
@@ -131,11 +143,12 @@ class _AddPriceState extends State<AddPriceScreen> {
       child:   Material(
         color: const Color(0xFF1d202b),
           child: Container(
+            height: 900,
             color: const Color(0xFF1d202b),
             child: Column(
               children: [
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -149,7 +162,7 @@ class _AddPriceState extends State<AddPriceScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     child: Center(
-                      child: Text(  '₺  ' "${_value.toStringAsFixed(2)}",style:
+                      child: Text(  '₺  ' "${_weight.toStringAsFixed(2)}",style:
                       Theme.of(context)
                           .textTheme
                           .headline6
@@ -157,30 +170,53 @@ class _AddPriceState extends State<AddPriceScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
+                Expanded(
+                  child: RotationTransition(
+                    turns: const AlwaysStoppedAnimation(90 / 360),
+                    child: VerticalWeightSlider(
+                      controller: _controller,
+
+                      decoration: const PointerDecoration(
+                        width: 120.0,
+                        height: 3.0,
+                        largeColor: Color(0xFF898989),
+                        mediumColor: Color(0xFFC5C5C5),
+                        smallColor: Color(0xFFF0F0F0),
+                        gap: 30.0,
+                      ),
+                      onChanged: (double value) {
+                        setState(() {
+                          _weight = value;
+                        });
+                      },
+                      indicator: Container(
+                        height: 3.0,
+                        width: 160.0,
+                        alignment: Alignment.centerLeft,
+                        color: Colors.amberAccent
+                      ),
+                    ),
+                  ),
                 ),
-                SfSlider(
-                  activeColor: Colors.amberAccent,
-                  min: 0.0,
-                  max: 100.0,
-                  value: _value,
-                  interval: 20,
-                  showTicks: true,
-                  showLabels: true,
-                  enableTooltip: true,
-                  minorTicksPerInterval: 1,
-                  onChanged: (dynamic value){
-                    setState(() {
-                      _value = value;
-                    });
-                  },
-                ),
+
               ],
             ),
           )
     ),
     );
+  }
+  Widget _enterPrice(Size size) {
+    return TextFormField(
+    textAlign: TextAlign.center,
+    style:  Theme.of(context)
+        .textTheme
+        .headline6
+    !.copyWith(color: Colors.amberAccent),
+    controller: _priceController,
+    keyboardType: TextInputType.number,
+    validator: SimpleFunctions.numberValidator,
+      );
+
   }
   Widget _priceName() {
     return const Align(

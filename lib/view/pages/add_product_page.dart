@@ -17,7 +17,6 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProductScreen> {
-  late final Widget child;
   final AutovalidateMode _autoValidateMode = AutovalidateMode.disabled;
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productDescriptionController =
@@ -90,8 +89,7 @@ class _AddProductState extends State<AddProductScreen> {
     return Form(
       key: _formKey,
       child: Column(
-        /* mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,*/
+
         children: [
           _productName(),
           const SizedBox(
@@ -588,6 +586,7 @@ class _AddProductState extends State<AddProductScreen> {
           const Padding(
             padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: VerticalDivider(
+              color: Colors.amberAccent,
               thickness: 3,
             ),
           ),
@@ -612,7 +611,7 @@ class _AddProductState extends State<AddProductScreen> {
     return Center(
         child: ClipOval(
       child: Material(
-        color: const Color(0xFF1d202b),
+        color: Colors.grey.shade400,
         child: DottedBorder(
           padding: const EdgeInsets.all(15.0),
           dashPattern: const [10, 10],
@@ -668,6 +667,7 @@ class _AddProductState extends State<AddProductScreen> {
 
   Widget _enterDetails(Size size) {
     return TextFormField(
+      textAlign: TextAlign.start,
       controller: _productDescriptionController,
       autovalidateMode: _autoValidateMode,
       validator: SimpleFunctions.nameValidator,

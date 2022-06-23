@@ -11,7 +11,7 @@ class SimpleFunctions {
     }
   }
 
-  static String? mobileNumberValidator(String? number) {
+  static String? numberValidator(String? number) {
     if (number!.isValidPhone) {
       return null;
     } else {

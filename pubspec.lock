@@ -104,6 +104,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_hooks:
+    dependency: "direct main"
+    description:
+      name: flutter_hooks
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.18.3"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -308,6 +315,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  vertical_weight_slider:
+    dependency: "direct main"
+    description:
+      name: vertical_weight_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.4.0"
   xml:
     dependency: transitive
     description:
